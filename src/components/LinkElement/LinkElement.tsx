@@ -17,6 +17,12 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: "none",
       color: theme.palette.text.secondary,
       fontWeight: "normal",
+      textAlign: "left",
+    },
+    cell: {
+      "@media (max-width:767px)": {
+        display: "none",
+      },
     },
   })
 );
@@ -41,7 +47,6 @@ const LinkElement: React.FC<PropsType> = (props) => {
     fetchLinksFailureAction,
   } = props;
   const hashedLink = `${siteUrl}/${hash}`;
-  const windowWidth = document.documentElement.clientWidth;
 
   const removeButtonHandler = (): void => {
     const isConfirmed: boolean = window.confirm("Подтвердить удаление?");
@@ -135,26 +140,24 @@ const LinkElement: React.FC<PropsType> = (props) => {
               {url.length > 30 ? `${url.slice(0, 30)}...` : url}
             </Typography>
             <Button className={classes.link} title="Скопировать" color="default" onClick={copyLinkHandler}>
-              {hashedLink}
+              {hashedLink.length > 30 ? `...${hashedLink.slice(hashedLink.length - 30)}` : hashedLink}
             </Button>
             <Typography color="textPrimary" variant="body2" component="div">
               {!isEditing ? title : EditFormElement}
             </Typography>
           </TableCell>
-          {windowWidth >= 768 && (
-            <>
-              <TableCell>{counter}</TableCell>
-              <TableCell padding="none">{dateFormatter(date)}</TableCell>
-              <TableCell padding="none">
-                <Button title="Редактировать название" color="primary" onClick={editButtonHandler}>
-                  &#9998;
-                </Button>
-                <Button title="Удалить" color="secondary" onClick={removeButtonHandler}>
-                  &#10006;
-                </Button>
-              </TableCell>
-            </>
-          )}
+          <TableCell className={classes.cell}>{counter}</TableCell>
+          <TableCell className={classes.cell} padding="none">
+            {dateFormatter(date)}
+          </TableCell>
+          <TableCell className={classes.cell} padding="none">
+            <Button title="Редактировать название" color="primary" onClick={editButtonHandler}>
+              &#9998;
+            </Button>
+            <Button title="Удалить" color="secondary" onClick={removeButtonHandler}>
+              &#10006;
+            </Button>
+          </TableCell>
         </>
       )}
     </TableRow>

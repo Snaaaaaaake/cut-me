@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { TextField, Typography, Button, Box } from "@material-ui/core";
+import { TextField, Typography, Button, Box, FormControl } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import ServiceContext from "../Context/ServiceContext";
 import { FormLoginInitialState as initialState } from "../../store/initialStates";
@@ -72,7 +72,7 @@ const LoginForm: React.FC<PropsType> = (props) => {
       </Box>
 
       <form className={classes.root} onSubmit={onSubmitSignInHandler}>
-        <fieldset className={classes.formContainer} disabled={isLoading}>
+        <FormControl className={classes.formContainer} disabled={isLoading}>
           <TextField
             onChange={onChangeInputHandler}
             id="email"
@@ -98,11 +98,11 @@ const LoginForm: React.FC<PropsType> = (props) => {
             {error}
           </Typography>
           <Box mt={3}>
-            <Button type="submit" variant="contained" color="primary">
+            <Button disabled={isLoading} type="submit" variant="contained" color="primary">
               Войти
             </Button>
           </Box>
-        </fieldset>
+        </FormControl>
       </form>
     </>
   );

@@ -30,6 +30,11 @@ const useStyles = makeStyles(() =>
     button: {
       padding: 0,
     },
+    cell: {
+      "@media (max-width:767px)": {
+        display: "none",
+      },
+    },
   })
 );
 
@@ -49,7 +54,19 @@ const TableComponent: React.FC<PropsFromRedux> = (props) => {
     linksState: { links, error, isLoading },
   } = props;
   const allCheckboxesAreChecked = links.length === formCheckboxState.length;
-  const windowWidth = document.documentElement.clientWidth;
+
+  useEffect(() => {
+    if (user) {
+      fetchLinksRequestAction();
+      linkService
+        .getLinks(user._id)
+        .then((data) => fetchLinksSuccessAction(data))
+        .catch(fetchLinksFailureAction);
+    }
+    return (): void => {
+      fetchLinksRequestAction();
+    };
+  }, [user]);
 
   const sortedLinks = links.sort((a, b) => {
     function sortByType<T>(a: T, b: T, type: string): number {
@@ -92,19 +109,6 @@ const TableComponent: React.FC<PropsFromRedux> = (props) => {
       </Button>
     );
   };
-
-  useEffect(() => {
-    if (user) {
-      fetchLinksRequestAction();
-      linkService
-        .getLinks(user._id)
-        .then((data) => fetchLinksSuccessAction(data))
-        .catch(fetchLinksFailureAction);
-    }
-    return (): void => {
-      fetchLinksRequestAction();
-    };
-  }, [user]);
 
   const sorterHandler = (
     sorterButtonType: keyof ServiceTypes.IServerResponseLink
@@ -187,17 +191,13 @@ const TableComponent: React.FC<PropsFromRedux> = (props) => {
               <TableCell title="Сортировать по имени" padding="none">
                 <FilterButton buttonType="title">Ссылка</FilterButton>
               </TableCell>
-              {windowWidth >= 768 && (
-                <>
-                  <TableCell title="Переходов" padding="none">
-                    <FilterButton buttonType="counter">&#10149;</FilterButton>
-                  </TableCell>
-                  <TableCell padding="none">
-                    <FilterButton buttonType="date">Дата создания</FilterButton>
-                  </TableCell>
-                  <TableCell padding="none"></TableCell>
-                </>
-              )}
+              <TableCell className={classes.cell} title="Переходов" padding="none">
+                <FilterButton buttonType="counter">&#10149;</FilterButton>
+              </TableCell>
+              <TableCell className={classes.cell} padding="none">
+                <FilterButton buttonType="date">Дата создания</FilterButton>
+              </TableCell>
+              <TableCell className={classes.cell} padding="none"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

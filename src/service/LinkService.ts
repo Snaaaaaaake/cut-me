@@ -63,7 +63,7 @@ export default class LinkService {
 
   public addLink(
     url: string,
-    owner: string,
+    owner: string | null,
     title: string,
     short: string
   ): Promise<ServiceTypes.IServerResponseLink[]> {

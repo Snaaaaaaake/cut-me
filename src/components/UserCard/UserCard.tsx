@@ -64,7 +64,7 @@ const MainPage: React.FC<PropsType> = (props) => {
       </>
     );
   } else {
-    return <div>Требуется регистрация</div>;
+    return <Box p={2}>Требуется регистрация</Box>;
   }
 };
 const mapStateToProps = (state: StoreStatesTypes.StoreStateType) => ({

@@ -1,1 +1,1 @@
-export default "http://cut.mylink.bar";
+export default process.env.REACT_APP_SITE_URL;

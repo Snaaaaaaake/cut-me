@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { TextField, Typography, Button, Box } from "@material-ui/core";
+import { TextField, Typography, Button, Box, FormControl } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import ServiceContext from "../Context/ServiceContext";
 import { FormRegistrationInitialState as initialState } from "../../store/initialStates";
@@ -74,7 +74,7 @@ const RegisterForm: React.FC<PropsType> = (props) => {
         </Typography>
       </Box>
       <form className={classes.root} onSubmit={onSubmitSignUpHandler}>
-        <fieldset className={classes.formContainer} disabled={isLoading}>
+        <FormControl className={classes.formContainer} disabled={isLoading}>
           <TextField
             onChange={onChangeInputHandler}
             id="name"
@@ -86,7 +86,7 @@ const RegisterForm: React.FC<PropsType> = (props) => {
             type="text"
             value={name}
             inputProps={{
-              pattern: "[а-яА-ЯA-Za-z0-9_-s]*",
+              pattern: "[а-яА-ЯёЁA-Za-z0-9-_\\s]*",
               minLength: 2,
               maxLength: 25,
             }}
@@ -129,11 +129,11 @@ const RegisterForm: React.FC<PropsType> = (props) => {
             {error}
           </Typography>
           <Box mt={3}>
-            <Button type="submit" variant="contained" color="primary">
+            <Button disabled={isLoading} type="submit" variant="contained" color="primary">
               Зарегистрироваться
             </Button>
           </Box>
-        </fieldset>
+        </FormControl>
       </form>
     </>
   );

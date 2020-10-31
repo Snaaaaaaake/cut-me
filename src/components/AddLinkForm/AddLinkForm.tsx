@@ -7,7 +7,7 @@ import { StoreStatesTypes } from "../../types/reduxTypes";
 import siteUrl from "../../constants/siteUrl";
 
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { TextField, Typography, Button, Box } from "@material-ui/core";
+import { TextField, Typography, Button, Box, FormControl } from "@material-ui/core";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -34,8 +34,7 @@ const AddLinkForm: React.FC<PropsFromRedux> = (props) => {
   });
   let inputRef: HTMLInputElement;
   const { url, title, short, error, isLoading, link } = formState;
-
-  const owner = props.userState.user ? props.userState.user._id : process.env.REACT_APP_GUIEST_USER_ID!;
+  const owner = props.userState.user ? props.userState.user._id : null;
 
   const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault();
@@ -50,7 +49,7 @@ const AddLinkForm: React.FC<PropsFromRedux> = (props) => {
     if (event.currentTarget.checkValidity()) {
       setFormState({ ...formState, isLoading: true });
       linkService
-        .addLink(url, owner, title, short)
+        .addLink(url, owner, title, short.toLowerCase())
         .then((data) => {
           setFormState({
             ...FormAddLinkInitialState,
@@ -96,7 +95,7 @@ const AddLinkForm: React.FC<PropsFromRedux> = (props) => {
         </Box>
       )}
       <form className={classes.root} onSubmit={submitFormHandler}>
-        <fieldset className={classes.formContainer} disabled={isLoading}>
+        <FormControl className={classes.formContainer} disabled={isLoading}>
           <TextField
             onChange={changeInputHandler}
             id="url"
@@ -108,7 +107,7 @@ const AddLinkForm: React.FC<PropsFromRedux> = (props) => {
             size="medium"
             type="text"
             value={url}
-            inputProps={{ pattern: "[^<>]*" }}
+            inputProps={{ pattern: "http[^<>]*" }}
           />
           <TextField
             onChange={changeInputHandler}
@@ -140,11 +139,11 @@ const AddLinkForm: React.FC<PropsFromRedux> = (props) => {
           </Typography>
 
           <Box mt={3}>
-            <Button type="submit" variant="contained" color="primary">
+            <Button disabled={isLoading} type="submit" variant="contained" color="primary">
               Добавить
             </Button>
           </Box>
-        </fieldset>
+        </FormControl>
       </form>
     </>
   );

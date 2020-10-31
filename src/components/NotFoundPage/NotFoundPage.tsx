@@ -1,6 +1,7 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, Button, Box } from "@material-ui/core";
 import Head from "../Head/Head";
 
 const useStyles = makeStyles(() =>
@@ -13,11 +14,19 @@ const useStyles = makeStyles(() =>
 
 const NotFoundPage: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
   return (
     <Head>
-      <Typography variant="h3" className={classes.title} align="center" component="h1">
-        Ничего не найдено!
-      </Typography>
+      <>
+        <Typography variant="h3" className={classes.title} align="center" component="h1">
+          Ничего не найдено!
+        </Typography>
+        <Box display="flex" justifyContent="center">
+          <Button onClick={() => history.push("/")} color="primary" variant="contained">
+            На главную
+          </Button>
+        </Box>
+      </>
     </Head>
   );
 };
